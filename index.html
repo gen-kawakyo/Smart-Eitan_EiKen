@@ -238,9 +238,14 @@
                         <div class="grid grid-cols-1 gap-1">
                             <div class="flex items-start justify-between gap-4">
                                 <div id="viewWord" class="flex-1 px-2 py-1 font-black text-slate-900"></div>
-                                <button id="ttsPlaySingleBtn" class="mt-2 p-2 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-xl transition-all shadow-sm shrink-0" title="Speak word">
-                                    <i data-lucide="volume-2" class="w-6 h-6"></i>
-                                </button>
+                                <div class="flex gap-2 items-center">
+                                    <button id="ttsPlaySingleBtn" class="p-2 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-xl transition-all shadow-sm shrink-0" title="Speak word">
+                                        <i data-lucide="volume-2" class="w-5 h-5"></i>
+                                    </button>
+                                    <button id="ttsPlayListDetailBtn" class="p-2 bg-slate-50 text-slate-400 hover:bg-red-600 hover:text-white rounded-xl transition-all shadow-sm shrink-0" title="Listen all from here">
+                                        <i data-lucide="play-circle" class="w-5 h-5"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div id="pronunciationArea" class="flex flex-col gap-1 px-2 mt-1"></div>
                         </div>
@@ -292,7 +297,7 @@
         let ttsMasterExIdx = -1; // 現在連続再生を開始した例文のインデックス
         let preferredVoice = null;
 
-        const defaultDataFiles = ['wordlist/DB48-std.json', 'wordlist/4kyuu.json', 'wordlist/5kyuu.json'];
+        const defaultDataFiles = ['wordlist/5kyuu.json', 'wordlist/4kyuu.json', 'wordlist/3kyuu.json', 'wordlist/j2kyuu.json'];
 
         const VISUAL_CONFIG = {
             'usage': { title: "Usage", color: "cyan", icon: "activity", label: "活用" },
@@ -345,6 +350,7 @@
             modeStudyBtn: document.getElementById('modeStudyBtn'),
             extraSearchDict: document.getElementById('extraSearchDict'),
             ttsPlayListBtn: document.getElementById('ttsPlayListBtn'),
+            ttsPlayListDetailBtn: document.getElementById('ttsPlayListDetailBtn'),
             ttsPlaySingleBtn: document.getElementById('ttsPlaySingleBtn'),
             listCounter: document.getElementById('listCounter')
         };
@@ -751,7 +757,7 @@
                             <div class="flex items-center gap-2 flex-wrap">
                                 ${it.type ? `<span class="type-label-text font-black px-1 rounded ${it.type === '注意' ? 'label-caution' : 'label-normal'}">${it.type}</span>` : ''}
                                 ${it.label ? `<span class="type-label-text font-black text-${config.color}-600 border border-${config.color}-100 bg-${config.color}-50 px-1 rounded">${it.label}</span>` : ''}
-                                <span class="rel-word-text text-slate-800 ${isNote ? 'font-medium' : 'font-black'}">${formatText(it.content || "")}</span>
+                                <span class="rel-word-text text-slate-800 font-normal">${formatText(it.content || "")}</span>
                                 ${it.pronunciation?.[0] ? `<span class="text-[11px] font-serif italic text-slate-500">${it.pronunciation[0].text}</span>` : ''}
                             </div>
                             <div class="ml-10">
@@ -810,6 +816,12 @@
             els.ttsPlayListBtn.innerHTML = '<i data-lucide="volume-2" class="w-5 h-5"></i>';
             els.ttsPlayListBtn.className = els.ttsPlayListBtn.className.replace('bg-red-600', 'bg-white').replace('text-white', 'text-slate-600');
             
+            if (els.ttsPlayListDetailBtn) {
+                els.ttsPlayListDetailBtn.innerHTML = '<i data-lucide="play-circle" class="w-6 h-6"></i>';
+                els.ttsPlayListDetailBtn.classList.remove('bg-red-600', 'text-white');
+                els.ttsPlayListDetailBtn.classList.add('bg-slate-50', 'text-slate-400');
+            }
+            
             document.querySelectorAll('.example-card').forEach(el => el.classList.remove('ring-2', 'ring-blue-500'));
             document.querySelectorAll('.ex-cont-btn').forEach(btn => {
                 btn.innerHTML = '<i data-lucide="play-circle" class="w-3.5 h-3.5"></i>';
@@ -827,6 +839,12 @@
             
             els.ttsPlayListBtn.innerHTML = '<i data-lucide="square" class="w-5 h-5"></i>';
             els.ttsPlayListBtn.className = els.ttsPlayListBtn.className.replace('bg-white', 'bg-red-600').replace('text-slate-600', 'text-white');
+
+            if (els.ttsPlayListDetailBtn) {
+                els.ttsPlayListDetailBtn.innerHTML = '<i data-lucide="square" class="w-6 h-6"></i>';
+                els.ttsPlayListDetailBtn.classList.remove('bg-slate-50', 'text-slate-400');
+                els.ttsPlayListDetailBtn.classList.add('bg-red-600', 'text-white');
+            }
             lucide.createIcons();
             readNextInList();
         }
@@ -979,6 +997,11 @@
             };
 
             els.ttsPlayListBtn.onclick = () => {
+                if(isTtsPlayingList) stopTtsList();
+                else startTtsList();
+            };
+
+            els.ttsPlayListDetailBtn.onclick = () => {
                 if(isTtsPlayingList) stopTtsList();
                 else startTtsList();
             };
