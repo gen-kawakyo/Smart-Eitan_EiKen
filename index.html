@@ -232,12 +232,14 @@
                         <button id="azRight" class="absolute right-0 top-0 bottom-0 w-6 flex items-center justify-center bg-white/80 text-slate-400 hover:text-blue-600 z-10 rounded-r-lg cursor-pointer"><i data-lucide="chevron-right" class="w-3 h-3"></i></button>
                     </div>
 
-                    <!-- Jump Slider -->
-                    <div id="jumpSliderContainer" class="px-1 py-1">
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="fast-forward" class="w-3 h-3 text-slate-400"></i>
-                            <input type="range" id="jumpSlider" min="0" max="100" value="0" class="flex-1 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                            <span id="jumpSliderLabel" class="text-[9px] font-bold text-slate-400 w-8 text-right">0%</span>
+                    <!-- Jump Buttons -->
+                    <div id="jumpButtonsContainer" class="px-1 py-1">
+                        <div class="flex items-center justify-between gap-1">
+                            <button id="jumpPrev100" class="flex-1 h-7 bg-white border border-slate-200 rounded text-[10px] font-bold text-slate-500 hover:bg-slate-50 active:scale-95 transition-all">-100</button>
+                            <button id="jumpPrev10" class="flex-1 h-7 bg-white border border-slate-200 rounded text-[10px] font-bold text-slate-500 hover:bg-slate-50 active:scale-95 transition-all">-10</button>
+                            <div id="jumpCurrentPos" class="px-2 text-[10px] font-black text-blue-600 min-w-[40px] text-center">1</div>
+                            <button id="jumpNext10" class="flex-1 h-7 bg-white border border-slate-200 rounded text-[10px] font-bold text-slate-500 hover:bg-slate-50 active:scale-95 transition-all">+10</button>
+                            <button id="jumpNext100" class="flex-1 h-7 bg-white border border-slate-200 rounded text-[10px] font-bold text-slate-500 hover:bg-slate-50 active:scale-95 transition-all">+100</button>
                         </div>
                     </div>
                 </div>
@@ -485,8 +487,11 @@
             ttsPlayListDetailBtn: document.getElementById('ttsPlayListDetailBtn'),
             ttsPlaySingleBtn: document.getElementById('ttsPlaySingleBtn'),
             listCounter: document.getElementById('listCounter'),
-            jumpSlider: document.getElementById('jumpSlider'),
-            jumpSliderLabel: document.getElementById('jumpSliderLabel'),
+            jumpPrev100: document.getElementById('jumpPrev100'),
+            jumpPrev10: document.getElementById('jumpPrev10'),
+            jumpNext10: document.getElementById('jumpNext10'),
+            jumpNext100: document.getElementById('jumpNext100'),
+            jumpCurrentPos: document.getElementById('jumpCurrentPos'),
             infoModal: document.getElementById('infoModal'),
             infoBtn: document.getElementById('infoBtn'),
             infoSource: document.getElementById('infoSource'),
@@ -731,6 +736,24 @@
             return colors[pos] || 'text-slate-600 bg-slate-50 border-slate-200';
         }
 
+        let currentJumpIndex = 0;
+        function jumpList(offset) {
+            if (filteredIndices.length === 0) return;
+            currentJumpIndex = Math.max(0, Math.min(filteredIndices.length - 1, currentJumpIndex + offset));
+            const targetIdx = filteredIndices[currentJumpIndex];
+            const targetEl = document.getElementById(`result-item-${targetIdx}`);
+            if (targetEl) {
+                targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            updateJumpDisplay();
+        }
+
+        function updateJumpDisplay() {
+            if (els.jumpCurrentPos) {
+                els.jumpCurrentPos.innerText = currentJumpIndex + 1;
+            }
+        }
+
         function renderList() {
             if(isTtsPlayingList || isTtsPlayingEx) stopTtsList();
 
@@ -785,12 +808,9 @@
             filteredIndices = filtered.map(item => item.idx);
             els.listCounter.innerText = `${filteredIndices.length} items found`;
 
-            // Update Jump Slider
-            if (els.jumpSlider) {
-                els.jumpSlider.max = Math.max(0, filteredIndices.length - 1);
-                els.jumpSlider.value = 0;
-                els.jumpSliderLabel.innerText = "0";
-            }
+            // Reset Jump Position
+            currentJumpIndex = 0;
+            updateJumpDisplay();
 
             const isStudy = currentMode === 'study';
             els.resultsList.innerHTML = filtered.map(item => {
@@ -798,15 +818,17 @@
                 return `
                 <div id="result-item-${item.idx}" onclick="openDetail(${item.idx})" class="p-3 bg-white rounded-xl border-2 cursor-pointer transition-all shadow-sm group ${item.idx === editingIndex ? 'active-selection ring-2 ring-blue-500/10' : markClass + ' hover:border-slate-200'}">
                     <div class="flex items-start justify-between">
-                        <span class="font-black text-slate-900 group-hover:text-blue-600 uppercase truncate flex-1 block">${item.word}</span>
+                        <span class="font-black text-slate-900 group-hover:text-blue-600 uppercase truncate flex-1 block">
+                            ${item.word}
+                            ${isStudy ? `<span class="block text-[9px] text-slate-400 font-bold mt-0.5">ID: ${item.subID || '-'}</span>` : ''}
+                        </span>
                         <div class="flex gap-4 ml-2 items-center flex-shrink-0">
                             ${isStudy ? `
                                 <div onclick="event.stopPropagation(); setMarking(${item.idx}, 'red')" class="marker-dot bg-red-400 ${item.mark==='red'?'active ring-red-200':''}"></div>
                                 <div onclick="event.stopPropagation(); setMarking(${item.idx}, 'yellow')" class="marker-dot bg-yellow-400 ${item.mark==='yellow'?'active ring-yellow-100':''}"></div>
                                 <div onclick="event.stopPropagation(); setMarking(${item.idx}, 'green')" class="marker-dot bg-green-400 ${item.mark==='green'?'active ring-green-100':''}"></div>
                             ` : `
-                                ${item.level ? `<span class="level-badge" title="${item.level}">${shortenText(item.level)}</span>` : ''}
-                                ${item.dataSource ? `<span class="id-badge" title="${item.dataSource}">${shortenText(item.dataSource)}</span>` : ''}
+                                ${item.subID ? `<span class="id-badge bg-slate-100 text-slate-500 border-slate-200" title="ID: ${item.subID}">${item.subID}</span>` : ''}
                             `}
                         </div>
                     </div>
@@ -1203,18 +1225,10 @@
             els.infoBtn.onclick = toggleInfo;
             els.searchModalBtn.onclick = toggleSearch;
 
-            els.jumpSlider.addEventListener('input', (e) => {
-                const val = parseInt(e.target.value);
-                const item = dictionaryData[filteredIndices[val]];
-                els.jumpSliderLabel.innerText = item ? (item.subID || val) : val;
-                if (filteredIndices[val] !== undefined) {
-                    const targetId = `result-item-${filteredIndices[val]}`;
-                    const targetEl = document.getElementById(targetId);
-                    if (targetEl) {
-                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                }
-            });
+            els.jumpPrev100.onclick = () => jumpList(-100);
+            els.jumpPrev10.onclick = () => jumpList(-10);
+            els.jumpNext10.onclick = () => jumpList(10);
+            els.jumpNext100.onclick = () => jumpList(100);
         }
 
         init();
