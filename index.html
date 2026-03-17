@@ -201,26 +201,27 @@
                         </button>
                     </div>
 
-                    <div class="flex items-center gap-2 px-1">
+                    <div class="flex items-center gap-1.5 px-0.5">
                         <button id="ttsPlayListBtn" class="h-9 w-9 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm shrink-0" title="Listen all from selection">
-                            <i data-lucide="volume-2" class="w-5 h-5"></i>
+                            <i data-lucide="volume-2" class="w-4 h-4"></i>
                         </button>
-                        <div class="flex items-center gap-1.5 flex-1 justify-end">
-                            <select id="filterMark" class="h-9 bg-white border border-slate-200 text-slate-600 text-[10px] font-bold rounded-lg px-2 py-1 outline-none shadow-sm cursor-pointer hover:border-blue-300">
-                                <option value="all">全マーク</option>
-                                <option value="red">🚩 復習</option>
-                                <option value="yellow">⭐ 注意</option>
-                                <option value="green">✅ 習得</option>
-                                <option value="none">未マーク</option>
-                            </select>
-                            <select id="sortOrder" class="h-9 bg-white border border-slate-200 text-slate-600 text-[10px] font-bold rounded-lg px-2 py-1 outline-none shadow-sm cursor-pointer hover:border-blue-300">
-                                <option value="id_asc">ID 順</option>
-                                <option value="word_asc">A-Z 順</option>
-                                <option value="word_desc">Z-A 順</option>
-                                <option value="random">🎲 乱順</option>
-                                <option value="source_asc">Src 順</option>
-                            </select>
-                        </div>
+                        <button id="searchModalBtn" class="h-9 w-9 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-emerald-600 hover:text-white transition-all shadow-sm shrink-0" title="Advanced Search">
+                            <i data-lucide="search" class="w-4 h-4"></i>
+                        </button>
+                        <select id="filterMark" class="h-9 flex-1 bg-white border border-slate-200 text-slate-600 text-[10px] font-bold rounded-lg px-1 py-1 outline-none shadow-sm cursor-pointer hover:border-blue-300 min-w-0">
+                            <option value="all">Mark</option>
+                            <option value="red">🚩 復習</option>
+                            <option value="yellow">⭐ 注意</option>
+                            <option value="green">✅ 習得</option>
+                            <option value="none">未</option>
+                        </select>
+                        <select id="sortOrder" class="h-9 flex-1 bg-white border border-slate-200 text-slate-600 text-[10px] font-bold rounded-lg px-1 py-1 outline-none shadow-sm cursor-pointer hover:border-blue-300 min-w-0">
+                            <option value="id_asc">ID</option>
+                            <option value="word_asc">A-Z</option>
+                            <option value="word_desc">Z-A</option>
+                            <option value="random">🎲</option>
+                            <option value="source_asc">Src</option>
+                        </select>
                     </div>
 
                     <div class="relative group h-9 flex items-center">
@@ -239,30 +240,6 @@
                             <span id="jumpSliderLabel" class="text-[9px] font-bold text-slate-400 w-8 text-right">0%</span>
                         </div>
                     </div>
-
-                    <div id="extraSearchDict" class="space-y-2">
-                        <div class="grid grid-cols-2 gap-2">
-                            <div class="relative">
-                                <i data-lucide="languages" class="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-500 w-3.5 h-3.5"></i>
-                                <input type="text" id="searchMeaning" placeholder="意味..." class="w-full pl-9 pr-2 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-emerald-500/10 font-medium shadow-sm">
-                            </div>
-                            <div class="relative">
-                                <i data-lucide="tag" class="absolute left-3 top-1/2 -translate-y-1/2 text-purple-500 w-3.5 h-3.5"></i>
-                                <input type="text" id="searchTags" placeholder="#Tags..." class="w-full pl-9 pr-2 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500/10 font-medium shadow-sm">
-                            </div>
-                        </div>
-                        <div class="relative">
-                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
-                            <input type="text" id="searchKeyword" placeholder="KW(全体)..." class="w-full pl-9 pr-2 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-slate-500/10 font-medium shadow-sm">
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-4 gap-1.5">
-                        <select id="filterPos" class="pl-1.5 pr-1 py-1.5 bg-white border border-slate-200 rounded-lg text-[10px] font-bold outline-none shadow-sm"><option value="all">品詞</option></select>
-                        <select id="filterGrade" class="pl-1.5 pr-1 py-1.5 bg-white border border-slate-200 rounded-lg text-[10px] font-bold outline-none shadow-sm"><option value="all">Level</option></select>
-                        <select id="filterSource" class="pl-1.5 pr-1 py-1.5 bg-white border border-slate-200 rounded-lg text-[10px] font-bold outline-none shadow-sm"><option value="all">Src</option></select>
-                        <select id="filterTags" class="pl-1.5 pr-1 py-1.5 bg-white border border-slate-200 rounded-lg text-[10px] font-bold outline-none shadow-sm"><option value="all">Tags</option></select>
-                    </div>
                 </div>
                 
                 <div class="bg-slate-50 px-3 py-1 flex justify-between items-center border-b border-slate-100 shrink-0">
@@ -279,28 +256,28 @@
                 </div>
 
                 <div id="editorForm" class="hidden p-4 md:p-8 max-w-4xl mx-auto w-full space-y-6 pb-32">
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2 relative">
+                    <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm space-y-1 relative">
                         <!-- Compact Header -->
-                        <div class="flex items-center justify-between border-b border-slate-50 pb-1">
+                        <div class="flex items-center justify-between border-b border-slate-50 pb-0.5 mb-1">
                             <div class="flex gap-2 items-center">
                                 <span id="displaySubID" class="id-badge">ID</span>
                             </div>
-                            <button id="infoBtn" class="p-1.5 text-slate-400 hover:text-blue-600 transition-colors" title="Info">
+                            <button id="infoBtn" class="p-1 text-slate-400 hover:text-blue-600 transition-colors" title="Info">
                                 <i data-lucide="info" class="w-4 h-4"></i>
                             </button>
                         </div>
 
                         <div class="flex items-start justify-between gap-2">
                             <div class="flex-1">
-                                <div id="viewWord" class="font-black text-slate-900 text-2xl leading-tight"></div>
-                                <div id="pronunciationArea" class="mt-0.5"></div>
+                                <div id="viewWord" class="font-black text-slate-900 text-xl leading-tight"></div>
+                                <div id="pronunciationArea" class="mt-0"></div>
                             </div>
-                            <div class="flex flex-col gap-2">
+                            <div class="flex flex-row gap-1.5 items-center">
                                 <button id="ttsPlaySingleBtn" class="p-2 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-xl transition-all shadow-sm shrink-0" title="Speak word">
-                                    <i data-lucide="volume-2" class="w-5 h-5"></i>
+                                    <i data-lucide="volume-2" class="w-4 h-4"></i>
                                 </button>
                                 <button id="ttsPlayListDetailBtn" class="p-2 bg-slate-50 text-slate-400 hover:bg-red-600 hover:text-white rounded-xl transition-all shadow-sm shrink-0" title="Listen all from here">
-                                    <i data-lucide="play-circle" class="w-5 h-5"></i>
+                                    <i data-lucide="play-circle" class="w-4 h-4"></i>
                                 </button>
                             </div>
                         </div>
@@ -375,6 +352,56 @@
                 </div>
             </div>
             <button onclick="toggleInfo()" class="w-full py-3 bg-slate-900 text-white font-bold rounded-xl shadow-lg active:scale-95 transition-all">閉じる</button>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="searchModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 modal-overlay">
+        <div class="stat-card w-full max-w-sm p-6 space-y-6 animate-in zoom-in duration-200">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-black text-slate-900 flex items-center gap-2">
+                    <i data-lucide="search" class="text-emerald-500"></i> 詳細検索
+                </h2>
+                <button onclick="toggleSearch()" class="p-2 hover:bg-slate-100 rounded-full transition-colors">
+                    <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="relative">
+                    <i data-lucide="languages" class="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-500 w-3.5 h-3.5"></i>
+                    <input type="text" id="searchMeaning" placeholder="意味..." class="w-full pl-9 pr-2 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-emerald-500/10 font-medium shadow-sm">
+                </div>
+                <div class="relative">
+                    <i data-lucide="tag" class="absolute left-3 top-1/2 -translate-y-1/2 text-purple-500 w-3.5 h-3.5"></i>
+                    <input type="text" id="searchTags" placeholder="#Tags..." class="w-full pl-9 pr-2 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500/10 font-medium shadow-sm">
+                </div>
+                <div class="relative">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
+                    <input type="text" id="searchKeyword" placeholder="KW(全体)..." class="w-full pl-9 pr-2 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-slate-500/10 font-medium shadow-sm">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">品詞</label>
+                        <select id="filterPos" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold outline-none shadow-sm"><option value="all">品詞</option></select>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Level</label>
+                        <select id="filterGrade" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold outline-none shadow-sm"><option value="all">Level</option></select>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Source</label>
+                        <select id="filterSource" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold outline-none shadow-sm"><option value="all">Src</option></select>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Tags (Filter)</label>
+                        <select id="filterTags" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold outline-none shadow-sm"><option value="all">Tags</option></select>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="toggleSearch()" class="w-full py-3 bg-emerald-600 text-white font-bold rounded-xl shadow-lg active:scale-95 transition-all">検索を適用</button>
         </div>
     </div>
 
@@ -454,7 +481,6 @@
             fileInput: document.getElementById('fileInput'),
             modeDictBtn: document.getElementById('modeDictBtn'),
             modeStudyBtn: document.getElementById('modeStudyBtn'),
-            extraSearchDict: document.getElementById('extraSearchDict'),
             ttsPlayListBtn: document.getElementById('ttsPlayListBtn'),
             ttsPlayListDetailBtn: document.getElementById('ttsPlayListDetailBtn'),
             ttsPlaySingleBtn: document.getElementById('ttsPlaySingleBtn'),
@@ -466,7 +492,9 @@
             infoSource: document.getElementById('infoSource'),
             infoID: document.getElementById('infoID'),
             infoLevel: document.getElementById('infoLevel'),
-            infoTags: document.getElementById('infoTags')
+            infoTags: document.getElementById('infoTags'),
+            searchModal: document.getElementById('searchModal'),
+            searchModalBtn: document.getElementById('searchModalBtn')
         };
 
         function init() {
@@ -572,6 +600,15 @@
                 els.infoModal.classList.remove('hidden');
             } else {
                 els.infoModal.classList.add('hidden');
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function toggleSearch() {
+            if (els.searchModal.classList.contains('hidden')) {
+                els.searchModal.classList.remove('hidden');
+            } else {
+                els.searchModal.classList.add('hidden');
             }
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
@@ -1137,14 +1174,12 @@
                 currentMode = 'dict';
                 els.modeDictBtn.classList.add('bg-white', 'shadow-sm', 'text-blue-600');
                 els.modeStudyBtn.classList.remove('bg-white', 'shadow-sm', 'text-blue-600');
-                els.extraSearchDict.classList.remove('hidden');
                 renderList();
             };
             els.modeStudyBtn.onclick = () => {
                 currentMode = 'study';
                 els.modeStudyBtn.classList.add('bg-white', 'shadow-sm', 'text-blue-600');
                 els.modeDictBtn.classList.remove('bg-white', 'shadow-sm', 'text-blue-600');
-                els.extraSearchDict.classList.add('hidden');
                 renderList();
             };
 
@@ -1166,6 +1201,7 @@
             };
 
             els.infoBtn.onclick = toggleInfo;
+            els.searchModalBtn.onclick = toggleSearch;
 
             els.jumpSlider.addEventListener('input', (e) => {
                 const val = parseInt(e.target.value);
