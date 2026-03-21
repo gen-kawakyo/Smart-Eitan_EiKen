@@ -208,6 +208,9 @@
                         <button id="searchModalBtn" class="h-9 w-9 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-emerald-600 hover:text-white transition-all shadow-sm shrink-0" title="Advanced Search">
                             <i data-lucide="search" class="w-4 h-4"></i>
                         </button>
+                        <select id="filterGrade" class="h-9 flex-1 bg-white border border-slate-200 text-slate-600 text-[10px] font-bold rounded-lg px-1 py-1 outline-none shadow-sm cursor-pointer hover:border-blue-300 min-w-0">
+                            <option value="all">Level</option>
+                        </select>
                         <select id="filterMark" class="h-9 flex-1 bg-white border border-slate-200 text-slate-600 text-[10px] font-bold rounded-lg px-1 py-1 outline-none shadow-sm cursor-pointer hover:border-blue-300 min-w-0">
                             <option value="all">Mark</option>
                             <option value="red">🚩 復習</option>
@@ -291,13 +294,19 @@
                     </div>
 
                     <!-- Bottom Navigation -->
-                    <div class="flex justify-center gap-8 pt-4">
-                        <button onclick="navigateDetails(-1)" class="p-4 bg-white border border-slate-200 text-slate-400 hover:text-blue-600 rounded-full shadow-md transition-all active:scale-90">
-                            <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                    <div class="flex justify-center items-center gap-4 md:gap-8 pt-4">
+                        <button onclick="goBackToList()" class="flex flex-col items-center gap-1 p-3 bg-white border border-slate-200 text-slate-400 hover:text-blue-600 rounded-2xl shadow-md transition-all active:scale-95">
+                            <i data-lucide="list" class="w-5 h-5"></i>
+                            <span class="text-[10px] font-bold uppercase">List</span>
                         </button>
-                        <button onclick="navigateDetails(1)" class="p-4 bg-white border border-slate-200 text-slate-400 hover:text-blue-600 rounded-full shadow-md transition-all active:scale-90">
-                            <i data-lucide="arrow-right" class="w-6 h-6"></i>
-                        </button>
+                        <div class="flex gap-4 md:gap-8">
+                            <button onclick="navigateDetails(-1)" class="p-4 bg-white border border-slate-200 text-slate-400 hover:text-blue-600 rounded-full shadow-md transition-all active:scale-90">
+                                <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                            </button>
+                            <button onclick="navigateDetails(1)" class="p-4 bg-white border border-slate-200 text-slate-400 hover:text-blue-600 rounded-full shadow-md transition-all active:scale-90">
+                                <i data-lucide="arrow-right" class="w-6 h-6"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -389,14 +398,10 @@
                         <select id="filterPos" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold outline-none shadow-sm"><option value="all">品詞</option></select>
                     </div>
                     <div class="space-y-1">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Level</label>
-                        <select id="filterGrade" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold outline-none shadow-sm"><option value="all">Level</option></select>
-                    </div>
-                    <div class="space-y-1">
                         <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Source</label>
                         <select id="filterSource" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold outline-none shadow-sm"><option value="all">Src</option></select>
                     </div>
-                    <div class="space-y-1">
+                    <div class="space-y-1 col-span-2">
                         <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Tags (Filter)</label>
                         <select id="filterTags" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold outline-none shadow-sm"><option value="all">Tags</option></select>
                     </div>
@@ -1158,6 +1163,17 @@
             }
         }
         
+        function goBackToList() {
+            isMobileDetailView = false;
+            els.contentArea.classList.add('hidden');
+            els.sidebarArea.classList.remove('hidden');
+            els.mobileBackBtn.classList.add('hidden');
+            els.appTitle.classList.remove('hidden');
+            els.importBtn.classList.remove('hidden');
+            els.navButtons.classList.add('hidden');
+            stopTtsList();
+        }
+
         function setupEventListeners() {
             ['searchHeadword', 'searchMeaning', 'searchTags', 'searchKeyword', 'filterPos', 'filterTags', 'sortOrder', 'filterSource', 'filterGrade', 'filterMark'].forEach(id => {
                 document.getElementById(id)?.addEventListener('input', () => {
@@ -1171,16 +1187,7 @@
                 els.phraseModeToggle.classList.toggle('text-white');
                 renderList();
             });
-            els.mobileBackBtn.addEventListener('click', () => {
-                isMobileDetailView = false;
-                els.contentArea.classList.add('hidden');
-                els.sidebarArea.classList.remove('hidden');
-                els.mobileBackBtn.classList.add('hidden');
-                els.appTitle.classList.remove('hidden');
-                els.importBtn.classList.remove('hidden');
-                els.navButtons.classList.add('hidden');
-                stopTtsList();
-            });
+            els.mobileBackBtn.addEventListener('click', goBackToList);
 
             els.prevDetailBtn.onclick = () => { stopTtsList(); navigateDetails(-1); };
             els.nextDetailBtn.onclick = () => { stopTtsList(); navigateDetails(1); };
